@@ -4,87 +4,105 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ziva Clean</title>
+
 <style>
 body{
-    font-family: sans-serif;
-    background:#f4f6f8;
     margin:0;
+    font-family:sans-serif;
+    background:#f4f6f8;
     text-align:center;
 }
+
 header{
-    background:#0a7cff;
-    color:white;
+    background:#111;
+    color:#fff;
     padding:20px;
 }
+
 .container{
     padding:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
 }
+
 .card{
-    background:white;
-    max-width:400px;
-    margin:20px auto;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
     padding:20px;
-    border-radius:12px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
+
+.card img{
+    width:100%;
+    border-radius:10px;
+}
+
+h2{
+    margin:15px 0 10px;
+}
+
 .price{
-    font-size:22px;
-    color:#0a7cff;
+    margin:10px 0;
     font-weight:bold;
-    margin:15px 0;
 }
+
+.producer{
+    color:#0a7cff;
+}
+
+.consumer{
+    color:#28a745;
+}
+
 button{
-    background:#28a745;
-    color:white;
+    margin-top:15px;
+    background:#111;
+    color:#fff;
     border:none;
     padding:12px 20px;
     border-radius:8px;
-    font-size:16px;
+    font-size:15px;
     cursor:pointer;
 }
+
 button:hover{
-    background:#218838;
+    background:#333;
 }
+
 a{
-    text-decoration:none;
     color:white;
-}
-.contact{
-    margin-top:15px;
-    font-weight:bold;
+    text-decoration:none;
 }
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>Ziva Clean</h1>
-<p>مایع چند منظوره نسل جدید</p>
+<h1>محصولات ZIVA</h1>
+<p>قدرت تمیزی فراتر از انتظار</p>
 </header>
+
 <div class="container">
+
 <div class="card">
-<h2>مایع چند منظوره ZIVA</h2>
-<p>مناسب شستشوی ظروف، لباس و سطوح مختلف</p>
-<div class="price">قیمت: ۳۸۵,۹۰۰ تومان</div>
-
-<button>
-    
-<a href="tel:09193534928">تماس برای سفارش</a>
-</button>
-
-<div class="contact">
-شماره تماس: 09193534928
+<img src="images/3liter.jpg" alt="مایع سه لیتری">
+<h2>مایع چند منظوره ۳ لیتری</h2>
+<div class="price producer">قیمت تولید: 411,510 تومان</div>
+<div class="price consumer">قیمت مصرف کننده: 467,510 تومان</div>
+<button><a href="tel:09193534928">سفارش تلفنی</a></button>
 </div>
+
+<div class="card">
+<img src="images/1liter.jpg" alt="مایع یک لیتری">
+<h2>مایع ظرفشویی ۱ لیتری</h2>
+<div class="price producer">قیمت تولید: 123,510 تومان</div>
+<div class="price consumer">قیمت مصرف کننده: 137,810 تومان</div>
+<button><a href="tel:09193534928">سفارش تلفنی</a></button>
 </div>
+
 </div>
 
 </body>
-  </html>
-<h2>گالری محصولات</h2>
-
-<div class="gallery">
-  <img src="images/1.jpg">
-  <img src="images/2.jpg">
-  <img src="images/3.jpg">
-  <img src="images/4.jpg">
-</div>
+</html>
