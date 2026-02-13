@@ -1,108 +1,61 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ziva Clean</title>
+  <meta charset="UTF-8">
+  <title>Ziva Data</title>
 
-<style>
-body{
-    margin:0;
-    font-family:sans-serif;
-    background:#f4f6f8;
-    text-align:center;
-}
+  <!-- لود کردن supabase js -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-header{
-    background:#111;
-    color:#fff;
-    padding:20px;
-}
-
-.container{
-    padding:30px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-}
-
-.card{
-    background:#fff;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-    padding:20px;
-}
-
-.card img{<img src="images/green-3liter.jpg">
-    width:100%;
-    border-radius:10px;
-}
-
-h2{
-    margin:15px 0 10px;
-}
-
-.price{
-    margin:10px 0;
-    font-weight:bold;
-}
-
-.producer{
-    color:#0a7cff;
-}
-
-.consumer{
-    color:#28a745;
-}
-
-button{
-    margin-top:15px;
-    background:#111;
-    color:#fff;
-    border:none;
-    padding:12px 20px;
-    border-radius:8px;
-    font-size:15px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#333;
-}
-
-a{
-    color:white;
-    text-decoration:none;
-}
-</style>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  </style>
 </head>
-
 <body>
 
-<header>
-<h1>محصولات ZIVA</h1>
-<p>قدرت تمیزی فراتر از انتظار</p>
-</header>
+<h1>داده‌های جدول</h1>
+<table id="data-table">
+  <thead>
+    <tr><th>Field1</th><th>Field2</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-<div class="container">
+<script>
+  // اینها را جایگزین کن با مقادیر خودت:
+  const SUPABASE_URL = "https://YourProjectURL.supabase.co";
+  const SUPABASE_ANON_KEY = "YourAnonPublicKey";
 
-<div class="card">
-<img src="images/3liter.jpg" alt="مایع سه لیتری">
-<h2>مایع چند منظوره ۳ لیتری</h2>
-<div class="price producer">قیمت تولید: 411,510 تومان</div>
-<div class="price consumer">قیمت مصرف کننده: 467,510 تومان</div>
-<button><a href="tel:09193534928">سفارش تلفنی</a></button>
-</div>
+  // ساخت client Supabase
+  const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-<div class="card">
-<img src="images/1liter.jpg" alt="مایع یک لیتری">
-<h2>مایع ظرفشویی ۱ لیتری</h2>
-<div class="price producer">قیمت تولید: 123,510 تومان</div>
-<div class="price consumer">قیمت مصرف کننده: 137,810 تومان</div>
-<button><a href="tel:09193534928">سفارش تلفنی</a></button>
-</div>
+  // تابع گرفتن داده
+  async function fetchData() {
+    const { data, error } = await supabase
+      .from("YourTableName")
+      .select("*");
 
-</div>
+    if (error) {
+      console.error("Error fetching:", error);
+      alert("خطا در دریافت اطلاعات ببین console");
+      return;
+    }
+
+    const tbody = document.querySelector("#data-table tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${row.field1}</td><td>${row.field2}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // اجرا
+  fetchData();
+</script>
 
 </body>
 </html>
