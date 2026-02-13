@@ -8,47 +8,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body {
-  font-family: sans-serif;
-  margin: 0;
-  background: #f4f4f4;
-}
-header {
-  background: #0f172a;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-.container {
-  padding: 20px;
-}
-.product {
-  background: white;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-.product img {
-  width: 150px;
-}
-.price {
-  color: green;
-  font-weight: bold;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-th {
-  background: #0f172a;
-  color: white;
-}
+body { font-family: sans-serif; margin: 0; background: #f4f4f4; }
+header { background: #0f172a; color: white; padding: 20px; text-align: center; }
+.container { padding: 20px; }
+.product { background: white; padding: 15px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.product img { width: 150px; }
+.price { color: green; font-weight: bold; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; }
+th { background: #0f172a; color: white; }
 </style>
 </head>
 
@@ -101,10 +69,39 @@ async function loadData() {
   const tableBody = document.getElementById("data-table");
 
   try {
+    console.log("شروع بارگذاری داده‌ها…");
     const { data, error } = await supabaseClient
       .from("codes")
       .select("*");
 
     if (error) throw error;
 
-    tableBody.innerHTML = ""; // پاک کردن متن "در حال بار
+    tableBody.innerHTML = ""; // پاک کردن متن "در حال بارگذاری"
+
+    if (!data || data.length === 0) {
+      tableBody.innerHTML = "<tr><td colspan='3'>هیچ داده‌ای موجود نیست</td></tr>";
+      return;
+    }
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.product_code || ""}</td>
+        <td>${row.batch_code || ""}</td>
+        <td>${row.production_code || ""}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+
+  } catch (err) {
+    console.error("خطا در دریافت داده:", err);
+    tableBody.innerHTML = `<tr><td colspan='3'>خطا در دریافت داده. کنسول را ببینید.</td></tr>`;
+    alert("خطا در اتصال به Supabase. لطفاً console را بررسی کنید.");
+  }
+}
+
+loadData();
+</script>
+
+</body>
+</html>
