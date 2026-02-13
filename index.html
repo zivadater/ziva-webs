@@ -13,18 +13,15 @@ body {
   margin: 0;
   background: #f4f4f4;
 }
-
 header {
   background: #0f172a;
   color: white;
   padding: 20px;
   text-align: center;
 }
-
 .container {
   padding: 20px;
 }
-
 .product {
   background: white;
   padding: 15px;
@@ -32,27 +29,22 @@ header {
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-
 .product img {
   width: 150px;
 }
-
 .price {
   color: green;
   font-weight: bold;
 }
-
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
-
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
 }
-
 th {
   background: #0f172a;
   color: white;
@@ -71,16 +63,16 @@ th {
 
 <div class="product">
   <h2>مایع چند منظوره ۱ لیتری</h2>
-  <img src="https://via.placeholder.com/150">
+  <img src="https://via.placeholder.com/150" alt="مایع ۱ لیتری">
   <p>مناسب شستشوی ظروف، لباس و دست</p>
-  <p class="price">قیمت مصرف کننده: 467,000</p>
+  <p class="price">قیمت مصرف کننده: 467,000 تومان</p>
 </div>
 
 <div class="product">
   <h2>مایع چند منظوره ۳ لیتری</h2>
-  <img src="https://via.placeholder.com/150">
+  <img src="https://via.placeholder.com/150" alt="مایع ۳ لیتری">
   <p>مناسب شستشوی ظروف، لباس و دست</p>
-  <p class="price">قیمت مصرف کننده: 385,900</p>
+  <p class="price">قیمت مصرف کننده: 385,900 تومان</p>
 </div>
 
 <h2>کدهای تولید</h2>
@@ -93,45 +85,26 @@ th {
 </tr>
 </thead>
 <tbody id="data-table">
+<tr><td colspan="3">در حال بارگذاری...</td></tr>
 </tbody>
 </table>
 
 </div>
 
 <script>
-const SUPABASE_URL = "https://zivadater.github.io/ziva-webs/";
+const SUPABASE_URL = "https://vbmjsttfmznthcynuhcy.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_ynBLdyD55_ojMcN5epus7w_eY-qoqTC";
 
-const SUPABASE_ANON_KEY = "vbmjsttfmznthcynuhcy";
-
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 async function loadData() {
-  const { data, error } = await client
-    .from("اcodes")
-    .select("*");
+  const tableBody = document.getElementById("data-table");
 
-  if (error) {
-    console.error("خطا:", error);
-    alert("خطا در اتصال. کنسول رو ببین.");
-    return;
-  }
+  try {
+    const { data, error } = await supabaseClient
+      .from("codes")
+      .select("*");
 
-  const table = document.getElementById("data-table");
-  table.innerHTML = "";
+    if (error) throw error;
 
-  data.forEach(row => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${row.product_code}</td>
-      <td>${row.batch_code}</td>
-      <td>${row.production_code}</td>
-    `;
-    table.appendChild(tr);
-  });
-}
-
-loadData();
-</script>
-
-</body>
-</html>
+    tableBody.innerHTML = ""; // پاک کردن متن "در حال بار
