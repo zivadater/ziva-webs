@@ -15,7 +15,7 @@ header { background: #0f172a; color: white; padding: 20px; text-align: center; }
 .product img { width: 150px; }
 .price { color: green; font-weight: bold; }
 table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-th, td { border: 1px solid #ddd; padding: 8px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
 th { background: #0f172a; color: white; }
 </style>
 </head>
@@ -43,7 +43,7 @@ th { background: #0f172a; color: white; }
   <p class="price">قیمت مصرف کننده: 385,900 تومان</p>
 </div>
 
-<h2>کدهای تولید</h2>
+<h2>کدهای تولید (codes)</h2>
 <table>
 <thead>
 <tr>
@@ -52,8 +52,28 @@ th { background: #0f172a; color: white; }
 <th>کد تولید</th>
 </tr>
 </thead>
-<tbody id="data-table">
+<tbody id="codes-table">
 <tr><td colspan="3">در حال بارگذاری...</td></tr>
+</tbody>
+</table>
+
+<h2>مشتریان (customers)</h2>
+<table>
+<thead>
+<tr>
+<th>شناسه مشتری</th>
+<th>نام</th>
+<th>ایمیل</th>
+<th>تعداد فعال‌سازی</th>
+<th>تاریخ فعال‌سازی</th>
+<th>فعال شده</th>
+<th>کد محصول</th>
+<th>شماره بچ</th>
+<th>نوع محصول</th>
+</tr>
+</thead>
+<tbody id="customers-table">
+<tr><td colspan="9">در حال بارگذاری...</td></tr>
 </tbody>
 </table>
 
@@ -65,24 +85,17 @@ const SUPABASE_ANON_KEY = "sb_publishable_ynBLdyD55_ojMcN5epus7w_eY-qoqTC";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-async function loadData() {
-  const tableBody = document.getElementById("data-table");
-
+// بارگذاری داده های جدول codes
+async function loadCodes() {
+  const tableBody = document.getElementById("codes-table");
   try {
-    console.log("شروع بارگذاری داده‌ها…");
-    const { data, error } = await supabaseClient
-      .from("codes")
-      .select("*");
-
+    const { data, error } = await supabaseClient.from("codes").select("*");
     if (error) throw error;
-
-    tableBody.innerHTML = ""; // پاک کردن متن "در حال بارگذاری"
-
+    tableBody.innerHTML = "";
     if (!data || data.length === 0) {
       tableBody.innerHTML = "<tr><td colspan='3'>هیچ داده‌ای موجود نیست</td></tr>";
       return;
     }
-
     data.forEach(row => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -92,15 +105,46 @@ async function loadData() {
       `;
       tableBody.appendChild(tr);
     });
-
   } catch (err) {
-    console.error("خطا در دریافت داده:", err);
-    tableBody.innerHTML = `<tr><td colspan='3'>خطا در دریافت داده. کنسول را ببینید.</td></tr>`;
-    alert("خطا در اتصال به Supabase. لطفاً console را بررسی کنید.");
+    console.error("خطا در دریافت کدها:", err);
+    tableBody.innerHTML = `<tr><td colspan='3'>خطا در دریافت داده‌ها. کنسول را بررسی کنید.</td></tr>`;
   }
 }
 
-loadData();
+// بارگذاری داده های جدول customers
+async function loadCustomers() {
+  const tableBody = document.getElementById("customers-table");
+  try {
+    const { data, error } = await supabaseClient.from("customers").select("*");
+    if (error) throw error;
+    tableBody.innerHTML = "";
+    if (!data || data.length === 0) {
+      tableBody.innerHTML = "<tr><td colspan='9'>هیچ داده‌ای موجود نیست</td></tr>";
+      return;
+    }
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.customer_id || ""}</td>
+        <td>${row.name || ""}</td>
+        <td>${row.email || ""}</td>
+        <td>${row.activation_count || ""}</td>
+        <td>${row.activated_at || ""}</td>
+        <td>${row.is_activated ? "✅" : "❌"}</td>
+        <td>${row.code || ""}</td>
+        <td>${row.batch_number || ""}</td>
+        <td>${row.product_type || ""}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("خطا در دریافت مشتری‌ها:", err);
+    tableBody.innerHTML = `<tr><td colspan='9'>خطا در دریافت داده‌ها. کنسول را بررسی کنید.</td></tr>`;
+  }
+}
+
+loadCodes();
+loadCustomers();
 </script>
 
 </body>
