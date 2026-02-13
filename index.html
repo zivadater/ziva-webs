@@ -1,60 +1,136 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <title>Ziva Data</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZIVA شوینده چند منظوره</title>
 
-  <!-- لود کردن supabase js -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-  </style>
+<style>
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background: #f4f4f4;
+}
+
+header {
+  background: #0f172a;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  padding: 20px;
+}
+
+.product {
+  background: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.product img {
+  width: 150px;
+}
+
+.price {
+  color: green;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background: #0f172a;
+  color: white;
+}
+</style>
 </head>
+
 <body>
 
-<h1>داده‌های جدول</h1>
-<table id="data-table">
-  <thead>
-    <tr><th>Field1</th><th>Field2</th></tr>
-  </thead>
-  <tbody></tbody>
+<header>
+<h1>ZIVA</h1>
+<p>شوینده چند منظوره نسل جدید</p>
+</header>
+
+<div class="container">
+
+<div class="product">
+  <h2>مایع چند منظوره ۱ لیتری</h2>
+  <img src="https://via.placeholder.com/150">
+  <p>مناسب شستشوی ظروف، لباس و دست</p>
+  <p class="price">قیمت مصرف کننده: 467,000</p>
+</div>
+
+<div class="product">
+  <h2>مایع چند منظوره ۳ لیتری</h2>
+  <img src="https://via.placeholder.com/150">
+  <p>مناسب شستشوی ظروف، لباس و دست</p>
+  <p class="price">قیمت مصرف کننده: 385,900</p>
+</div>
+
+<h2>کدهای تولید</h2>
+<table>
+<thead>
+<tr>
+<th>کد محصول</th>
+<th>کد بچ</th>
+<th>کد تولید</th>
+</tr>
+</thead>
+<tbody id="data-table">
+</tbody>
 </table>
 
+</div>
+
 <script>
-  // اینها را جایگزین کن با مقادیر خودت:
-  const SUPABASE_URL = "https://YourProjectURL.supabase.co";
-  const SUPABASE_ANON_KEY = "YourAnonPublicKey";
+const SUPABASE_URL = "https://zivadater.github.io/ziva-webs/";
 
-  // ساخت client Supabase
-  const supabase = supabaseJs.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_ANON_KEY = "vbmjsttfmznthcynuhcy";
 
-  // تابع گرفتن داده
-  async function fetchData() {
-    const { data, error } = await supabase
-      .from("YourTableName")
-      .select("*");
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    if (error) {
-      console.error("Error fetching:", error);
-      alert("خطا در دریافت اطلاعات ببین console");
-      return;
-    }
+async function loadData() {
+  const { data, error } = await client
+    .from("اcodes")
+    .select("*");
 
-    const tbody = document.querySelector("#data-table tbody");
-    tbody.innerHTML = "";
-
-    data.forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${row.field1}</td><td>${row.field2}</td>`;
-      tbody.appendChild(tr);
-    });
+  if (error) {
+    console.error("خطا:", error);
+    alert("خطا در اتصال. کنسول رو ببین.");
+    return;
   }
 
-  // اجرا
-  fetchData();
+  const table = document.getElementById("data-table");
+  table.innerHTML = "";
+
+  data.forEach(row => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${row.product_code}</td>
+      <td>${row.batch_code}</td>
+      <td>${row.production_code}</td>
+    `;
+    table.appendChild(tr);
+  });
+}
+
+loadData();
 </script>
 
 </body>
